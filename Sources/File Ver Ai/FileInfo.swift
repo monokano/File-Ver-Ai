@@ -923,10 +923,20 @@ nonisolated enum FileParser {
     // MARK: - バージョン判定
 
     private static func determineVersion(fc: inout AiFileModel) {
+        // AI8 以前の旧フォーマット（AI8_CreatorVersion 無し・互換 Creator 無し）
+        // 例: Illustrator 5.5J など。creator1 に "Adobe Illustrator(TM) 5.5J 95.01.01"
+        // のような文字列が入っており、末尾は日付サフィックスのため versionNumberSuffix では拾えない。
+        // この場合は creator1 の Illustrator 直後のバージョントークンを「作成」、互換は空欄とする。
+        let isLegacyFormat = fc.ai8CreatorVersion.isEmpty && fc.creator2.isEmpty
+            && (fc.kind == "Ai" || fc.kind == "EPS")
+
         fc.determineCreated = fc.ai8CreatorVersion
 
         if fc.isIllustratorFile {
-            if fc.kind == "EPS" {
+            if isLegacyFormat {
+                fc.determineCreated = extractLegacyCreatorVersion(fc.creator1)
+                fc.determineSaved = ""
+            } else if fc.kind == "EPS" {
                 fc.determineSaved = fc.hasCreator2
                     ? versionNumberSuffix(fc.creator2)
                     : versionNumberSuffix(fc.creator1)
@@ -954,16 +964,36 @@ nonisolated enum FileParser {
         return String(s[range])
     }
 
+    // creator1 から Illustrator 直後の最初のバージョントークンを抽出する（旧フォーマット用）
+    // 例: "Adobe Illustrator(TM) 5.5J 95.01.01" → "5.5J"
+    //     "Adobe Illustrator(TM) 7.0"          → "7.0"
+    // 末尾の日付サフィックス（95.01.01 など）は対象外。
+    private static func extractLegacyCreatorVersion(_ creator1: String) -> String {
+        guard let regex = try? NSRegularExpression(
+                pattern: #"Illustrator[^ ]*\s+(\d+(?:\.\d+)?[A-Za-z]?)"#),
+              let match = regex.firstMatch(in: creator1,
+                                           range: NSRange(creator1.startIndex..., in: creator1)),
+              let range = Range(match.range(at: 1), in: creator1) else { return "" }
+        return String(creator1[range])
+    }
+
     // MARK: - バージョン名変換
 
     static func versionName(_ ver: String) -> String {
         let parts = ver.components(separatedBy: ".")
         guard let major = Int(parts.first ?? "") else { return ver }
-        let minor = parts.count > 1 ? (Int(parts[1]) ?? 0) : 0
+        // minor 部に locale サフィックス（例: "5J"）が付いている場合は数値部と接尾辞を分離する
+        let (minor, minorSuffix): (Int, String) = {
+            guard parts.count > 1 else { return (0, "") }
+            let raw = parts[1]
+            let digits = raw.prefix(while: { $0.isNumber })
+            let suffix = raw[digits.endIndex...]
+            return (Int(digits) ?? 0, String(suffix))
+        }()
 
         switch major {
         case 1...4:  return parts[0]
-        case 5:      return minor > 0 ? "5.\(minor)" : "5"
+        case 5:      return minorSuffix.isEmpty ? (minor > 0 ? "5.\(minor)" : "5") : "5"
         case 6...10: return parts[0]
         case 11:     return "CS"
         case 12:     return "CS2"

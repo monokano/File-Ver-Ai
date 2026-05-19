@@ -23,7 +23,7 @@ struct FileRow: Identifiable {
 
 nonisolated enum SupportedExtensions {
     /// 明示的に受け付ける拡張子。拡張子なし（"")はパース後に判定するため別経路で扱う。
-    static let set: Set<String> = ["ai", "ait", "pdf", "eps"]
+    static let set: Set<String> = ["ai", "ait", "pdf", "eps", "psd"]
 
     static func accept(_ url: URL) -> Bool {
         if url.hasDirectoryPath { return false }
@@ -86,8 +86,9 @@ final class ContentViewModel: ObservableObject {
         let extLower = url.pathExtension.lowercased()
         let kind = kindText(for: fc)
 
-        // 拡張子なしファイル: Illustrator 系でなければリストから除外（仕様§4）
-        if extLower.isEmpty && !fc.isIllustratorFile {
+        // 拡張子なしファイル: Illustrator/Photoshop と判定できたもののみリストに表示（仕様§4）
+        let isPhotoshop = (fc.appName == "Photoshop")
+        if extLower.isEmpty && !fc.isIllustratorFile && !isPhotoshop {
             return nil
         }
 
@@ -189,7 +190,7 @@ struct ContentView: View {
                 initialSort: (key: "fileName", ascending: true),
                 fontSize: CGFloat(listFontSize),
                 autosaveName: "FileList",
-                onSortedItemsChange: { rows in sortedRows = rows },
+                onSortedItemsChange: { rows in DispatchQueue.main.async { sortedRows = rows } },
                 onDoubleClick: { row in
                     NSWorkspace.shared.activateFileViewerSelecting([row.url])
                 },

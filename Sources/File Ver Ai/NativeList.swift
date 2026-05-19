@@ -79,7 +79,7 @@ struct NativeList<Item: Identifiable>: NSViewRepresentable {
         tv.dataSource = context.coordinator
         tv.delegate = context.coordinator
         tv.usesAlternatingRowBackgroundColors = true
-        tv.style = .fullWidth
+        tv.style = .inset
         tv.intercellSpacing = NSSize(width: 0, height: 0)
         tv.focusRingType = .none
         tv.rowHeight = Self.rowHeight(for: fontSize)

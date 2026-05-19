@@ -4,9 +4,10 @@
 
 - macOS用デスクトップアプリ
 - Adobe Illustratorファイルの作成バージョンを表示
+- EPSファイルの判別に対応
 - Illustrator編集機能を保持したPDFファイルに対応
 
-![Aver screenshot](img/window.png)
+![Aver screenshot](img/window-421.png)
 
 ## 使い方
 
