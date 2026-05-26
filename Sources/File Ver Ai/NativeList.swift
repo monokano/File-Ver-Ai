@@ -62,6 +62,8 @@ struct NativeList<Item: Identifiable>: NSViewRepresentable {
     var onDoubleClick: ((Item) -> Void)? = nil
     /// 行ごとの文字色。返り値 nil なら既定色。全列に一律適用される。
     var rowTextColor: ((Item) -> NSColor?)? = nil
+    /// この行をグレーアウト表示するか（文字を secondaryLabelColor、アイコンを 50% 不透明に）
+    var rowIsDimmed: ((Item) -> Bool)? = nil
     /// 行ごとの Bold 指定。true なら全列を Bold で描画（列の isBold より優先）。
     var rowIsBold: ((Item) -> Bool)? = nil
 
@@ -132,6 +134,7 @@ struct NativeList<Item: Identifiable>: NSViewRepresentable {
         coord.onSortedItemsChange = onSortedItemsChange
         coord.rowTextColor = rowTextColor
         coord.rowIsBold = rowIsBold
+        coord.rowIsDimmed = rowIsDimmed
         coord.selectionChanged = { newID in
             if selection != newID { selection = newID }
         }
@@ -182,6 +185,7 @@ struct NativeList<Item: Identifiable>: NSViewRepresentable {
         var selectionChanged: ((Item.ID?) -> Void)?
         var rowTextColor: ((Item) -> NSColor?)?
         var rowIsBold: ((Item) -> Bool)?
+        var rowIsDimmed: ((Item) -> Bool)?
         var isUpdating = false
         var currentFontSize: CGFloat = 12
         weak var tableView: NSTableView?
@@ -330,6 +334,7 @@ struct NativeList<Item: Identifiable>: NSViewRepresentable {
             field.alignment = col.alignment
             field.stringValue = col.value(item)
             applyStyle(field: field, col: col, item: item)
+            imageView.alphaValue = (rowIsDimmed?(item) ?? false) ? 0.5 : 1.0
             return cellView
         }
 
@@ -337,7 +342,11 @@ struct NativeList<Item: Identifiable>: NSViewRepresentable {
             let size: CGFloat = currentFontSize
             let bold = (rowIsBold?(item) ?? false) || col.isBold(item)
             field.font = bold ? .boldSystemFont(ofSize: size) : .systemFont(ofSize: size)
-            field.textColor = rowTextColor?(item) ?? .labelColor
+            if rowIsDimmed?(item) ?? false {
+                field.textColor = .secondaryLabelColor
+            } else {
+                field.textColor = rowTextColor?(item) ?? .labelColor
+            }
         }
 
         func tableViewSelectionDidChange(_ notification: Notification) {

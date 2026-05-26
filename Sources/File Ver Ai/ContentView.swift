@@ -14,6 +14,8 @@ struct FileRow: Identifiable {
     let kindText: String
     /// A3（PDF - Illustrator 編集機能なし）相当の警告表示対象か
     let isWarning: Bool
+    /// 拡張子とコンテンツの種類が一致しない（拡張子偽装）
+    let isExtMismatch: Bool
     let sortMajor: Int
     let sortMinor: Int
     let sortPatch: Int
@@ -97,8 +99,25 @@ final class ContentViewModel: ObservableObject {
         let (sMajor, sMinor, sPatch) = extractVersionParts(from: versionText)
         let icon = NSWorkspace.shared.icon(forFile: url.path)
 
-        // A3 警告判定
+        // A3 警告判定: Illustrator 編集機能のない PDF
         let isWarning = (fc.kind == "PDF" && !fc.isIllustratorFile)
+
+        // 拡張子偽装判定: コンテンツの種類と拡張子が合わない
+        // - kind="Ai":  .ai / .ait
+        // - kind="EPS": .eps
+        // - kind="PSD": .psd
+        // - kind="PDF": .pdf
+        let expectedExts: [String]
+        switch fc.kind {
+        case "Ai":  expectedExts = ["ai", "ait"]
+        case "EPS": expectedExts = ["eps"]
+        case "PSD": expectedExts = ["psd"]
+        case "PDF": expectedExts = ["pdf"]
+        default:    expectedExts = []
+        }
+        let isExtMismatch = !expectedExts.isEmpty
+            && !extLower.isEmpty
+            && !expectedExts.contains(extLower)
 
         return FileRow(
             url: url,
@@ -107,6 +126,7 @@ final class ContentViewModel: ObservableObject {
             versionText: versionText,
             kindText: kind,
             isWarning: isWarning,
+            isExtMismatch: isExtMismatch,
             sortMajor: sMajor,
             sortMinor: sMinor,
             sortPatch: sPatch
@@ -194,8 +214,7 @@ struct ContentView: View {
                 onDoubleClick: { row in
                     NSWorkspace.shared.activateFileViewerSelecting([row.url])
                 },
-                rowTextColor: { row in row.isWarning ? .systemRed : nil },
-                rowIsBold: { row in row.isWarning }
+                rowIsDimmed: { row in row.isWarning || row.isExtMismatch }
             )
 
             if vm.rows.isEmpty && !vm.isProcessing {

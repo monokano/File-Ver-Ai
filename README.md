@@ -7,11 +7,13 @@
 - EPSファイルの判別に対応
 - Illustrator編集機能を保持したPDFファイルに対応
 
-![Aver screenshot](img/window-421.png)
+![Aver screenshot](img/window-422.png)
 
 ## 使い方
 
 ウインドウにIllustratorファイルをドロップします。Dockのアプリアイコンにもドロップできます。
+
+拡張子が一致しないファイルとIllustrator編集機能がないPDFはグレーアウトします。
 
 ## 動作環境
 
