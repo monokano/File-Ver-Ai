@@ -57,13 +57,22 @@ nonisolated enum FileParser {
             return parsePDFXref(fh: fh)
         }()
 
-        // 2. XMP CreatorTool
+        // 2. ファイル種別判定（拡張子非依存・コンテンツベース）
+        //    getFileKind は CreatorTool を参照しないため、XMP取得より先に実行できる。
+        //    ここで isIllustratorFile が確定すると、下記3で XMP取得をスキップできる。
+        fc.kind = getFileKind(fc: &fc, pdfXref: pdfXref)
+
+        // 3. XMP CreatorTool
         // ・PDF構造ファイル  → xref 経由で Metadata オブジェクトを直接読む（高速）
         // ・非PDF の .ai/.ait → xmp:CreatorTool が存在しないためスキップ
         // ・その他（EPS等）  → 従来の逐次スキャン
         // ・notDetectXMP=true → 全種別スキップ
+        // ・isIllustratorFile=true（種別判定で確定済み）→ スキップ
+        //   CreatorTool は「Photoshop判定(下記6)」と「非PDF Illustratorの補完(下記4)」にしか
+        //   使わず、どちらも !isIllustratorFile が前提。Illustrator と確定済みのファイルでは
+        //   取得しても結果に影響しないため、無駄なフルスキャンを避けてスキップする。
         let t = Date()
-        if !notDetectXMP {
+        if !notDetectXMP && !fc.isIllustratorFile {
             if let xref = pdfXref {
                 if let fh = try? FileHandle(forReadingFrom: url) {
                     defer { try? fh.close() }
@@ -81,9 +90,6 @@ nonisolated enum FileParser {
             fc.xmpCreatorTool = "CreatorToolなし"
         }
         fc.timeXmpCreatorTool = Date().timeIntervalSince(t)
-
-        // 3. ファイル種別判定（拡張子非依存・コンテンツベース）
-        fc.kind = getFileKind(fc: &fc, pdfXref: pdfXref)
 
         // 4. XMP CreatorTool による補完（非PDF構造ファイルで Creator コメントが欠落しているケース）
         if !fc.isIllustratorFile && pdfXref == nil && fc.xmpCreatorTool.contains("Illustrator") {
