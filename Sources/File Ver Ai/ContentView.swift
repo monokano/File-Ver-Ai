@@ -213,8 +213,7 @@ struct ContentView: View {
                 onSortedItemsChange: { rows in DispatchQueue.main.async { sortedRows = rows } },
                 onDoubleClick: { row in
                     NSWorkspace.shared.activateFileViewerSelecting([row.url])
-                },
-                rowIsDimmed: { row in row.isWarning || row.isExtMismatch }
+                }
             )
 
             if vm.rows.isEmpty && !vm.isProcessing {
@@ -284,6 +283,7 @@ struct ContentView: View {
             id: "kind",
             title: String(localized: "column.kind"),
             { $0.kindText },
+            textColor: { ($0.isWarning || $0.isExtMismatch) ? .systemRed : nil },
             minWidth: 100, width: 170,
             secondaryComparator: { lhs, rhs in
                 lhs.displayName.localizedStandardCompare(rhs.displayName)

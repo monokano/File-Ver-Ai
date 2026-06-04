@@ -11,6 +11,8 @@ struct NativeListColumn<Item> {
     let value: (Item) -> String
     var icon: ((Item) -> NSImage?)? = nil
     var isBold: (Item) -> Bool
+    /// 列ごとの文字色。返り値 nil なら rowTextColor → 既定色の順にフォールバック。
+    var textColor: ((Item) -> NSColor?)? = nil
     var minWidth: CGFloat = 60
     var width: CGFloat?
     var alignment: NSTextAlignment = .natural
@@ -24,6 +26,7 @@ struct NativeListColumn<Item> {
          _ value: @escaping (Item) -> String,
          icon: ((Item) -> NSImage?)? = nil,
          isBold: @escaping (Item) -> Bool = { _ in false },
+         textColor: ((Item) -> NSColor?)? = nil,
          minWidth: CGFloat = 60,
          width: CGFloat? = nil,
          alignment: NSTextAlignment = .natural,
@@ -34,6 +37,7 @@ struct NativeListColumn<Item> {
         self.value = value
         self.icon = icon
         self.isBold = isBold
+        self.textColor = textColor
         self.minWidth = minWidth
         self.width = width
         self.alignment = alignment
@@ -62,7 +66,7 @@ struct NativeList<Item: Identifiable>: NSViewRepresentable {
     var onDoubleClick: ((Item) -> Void)? = nil
     /// 行ごとの文字色。返り値 nil なら既定色。全列に一律適用される。
     var rowTextColor: ((Item) -> NSColor?)? = nil
-    /// この行をグレーアウト表示するか（文字を secondaryLabelColor、アイコンを 50% 不透明に）
+    /// この行をグレーアウト表示するか（アイコンを 50% 不透明に。文字色は列/行の色指定がなければ secondaryLabelColor）
     var rowIsDimmed: ((Item) -> Bool)? = nil
     /// 行ごとの Bold 指定。true なら全列を Bold で描画（列の isBold より優先）。
     var rowIsBold: ((Item) -> Bool)? = nil
@@ -342,11 +346,9 @@ struct NativeList<Item: Identifiable>: NSViewRepresentable {
             let size: CGFloat = currentFontSize
             let bold = (rowIsBold?(item) ?? false) || col.isBold(item)
             field.font = bold ? .boldSystemFont(ofSize: size) : .systemFont(ofSize: size)
-            if rowIsDimmed?(item) ?? false {
-                field.textColor = .secondaryLabelColor
-            } else {
-                field.textColor = rowTextColor?(item) ?? .labelColor
-            }
+            // 文字色の優先順位: 列の textColor → 行の rowTextColor → (dimmed なら secondaryLabel) → labelColor
+            let base: NSColor = (rowIsDimmed?(item) ?? false) ? .secondaryLabelColor : .labelColor
+            field.textColor = col.textColor?(item) ?? rowTextColor?(item) ?? base
         }
 
         func tableViewSelectionDidChange(_ notification: Notification) {
