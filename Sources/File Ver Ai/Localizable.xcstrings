@@ -1,274 +1,288 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "11" : {
-
-    },
-    "12" : {
-
-    },
-    "13" : {
-
-    },
-    "14" : {
-
-    },
-    "Adobe Illustrator format (.ai)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adobe Illustrator format (.ai)"
+  "sourceLanguage": "en",
+  "strings": {
+    "11": {},
+    "12": {},
+    "13": {},
+    "14": {},
+    "Adobe Illustrator format (.ai)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adobe Illustrator format (.ai)"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adobe Illustrator 形式 (.ai)"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adobe Illustrator 形式 (.ai)"
           }
         }
       }
     },
-    "File Ver Ai" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "File Ver Ai"
+    "File Ver Ai": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "File Ver Ai"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "File Ver Ai"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "File Ver Ai"
           }
         }
       }
     },
-    "column.appVersion" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Version"
+    "column.appVersion": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "バージョン"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バージョン"
           }
         }
       }
     },
-    "column.fileName" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Name"
+    "column.fileName": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "名前"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "名前"
           }
         }
       }
     },
-    "column.kind" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kind"
+    "column.kind": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kind"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "種類"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "種類"
           }
         }
       }
     },
-    "Illustrator EPS format (.eps)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Illustrator EPS format (.eps)"
+    "Illustrator EPS format (.eps)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Illustrator EPS format (.eps)"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Illustrator EPS 形式 (.eps)"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Illustrator EPS 形式 (.eps)"
           }
         }
       }
     },
-    "Illustrator Template format (.ait)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Illustrator Template format (.ait)"
+    "Illustrator Template format (.ait)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Illustrator Template format (.ait)"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Illustrator Template 形式 (.ait)"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Illustrator Template 形式 (.ait)"
           }
         }
       }
     },
-    "menu.exportCSV" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Export CSV…"
+    "menu.exportCSV": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export CSV…"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "CSVに書き出す…"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CSVに書き出す…"
           }
         }
       }
     },
-    "menu.open" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open…"
+    "menu.open": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open…"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "開く…"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開く…"
           }
         }
       }
     },
-    "menu.textSize" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Text Size"
+    "menu.textSize": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Text Size"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "テキストサイズ"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "テキストサイズ"
           }
         }
       }
     },
-    "PDF with Illustrator native data (.pdf)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PDF with Illustrator native data (.pdf)"
+    "PDF with Illustrator native data (.pdf)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF with Illustrator native data (.pdf)"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PDF - Illustrator 編集機能保持 (.pdf)"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF - Illustrator 編集機能保持 (.pdf)"
           }
         }
       }
     },
-    "PDF without Illustrator native data (.pdf)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PDF without Illustrator native data (.pdf)"
+    "PDF without Illustrator native data (.pdf)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF without Illustrator native data (.pdf)"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PDF - Illustrator 編集機能なし (.pdf)"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF - Illustrator 編集機能なし (.pdf)"
           }
         }
       }
     },
-    "Photoshop EPS format (.eps)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Photoshop EPS format (.eps)"
+    "Photoshop EPS format (.eps)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photoshop EPS format (.eps)"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Photoshop EPS 形式 (.eps)"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photoshop EPS 形式 (.eps)"
           }
         }
       }
     },
-    "Photoshop format (.psd)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Photoshop format (.psd)"
+    "Photoshop format (.psd)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photoshop format (.psd)"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Photoshop 形式 (.psd)"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photoshop 形式 (.psd)"
           }
         }
       }
     },
-    "placeholder.dropFiles" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Drop Illustrator files here"
+    "placeholder.dropFiles": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drop Illustrator files here"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Illustrator ファイルをここにドロップ"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Illustrator ファイルをここにドロップ"
           }
         }
       }
     },
-    "Unknown" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unknown"
+    "Unknown": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unknown"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "不明"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不明"
+          }
+        }
+      }
+    },
+    "Large Document format (.psb)": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ビッグドキュメント形式 (.psb)"
+          }
+        }
+      }
+    },
+    "PDF with Photoshop native data (.pdf)": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF - Photoshop 編集機能保持 (.pdf)"
           }
         }
       }
     }
   },
-  "version" : "1.1"
+  "version": "1.1"
 }

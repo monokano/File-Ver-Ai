@@ -12,9 +12,7 @@ struct FileRow: Identifiable {
     let icon: NSImage
     let versionText: String
     let kindText: String
-    /// A3（PDF - Illustrator 編集機能なし）相当の警告表示対象か
-    let isWarning: Bool
-    /// 拡張子とコンテンツの種類が一致しない（拡張子偽装）
+    /// 拡張子とコンテンツの種類が一致しない（拡張子偽装）→ 種類列を赤表示
     let isExtMismatch: Bool
     let sortMajor: Int
     let sortMinor: Int
@@ -25,7 +23,7 @@ struct FileRow: Identifiable {
 
 nonisolated enum SupportedExtensions {
     /// 明示的に受け付ける拡張子。拡張子なし（"")はパース後に判定するため別経路で扱う。
-    static let set: Set<String> = ["ai", "ait", "pdf", "eps", "psd"]
+    static let set: Set<String> = ["ai", "ait", "pdf", "eps", "psd", "psb"]
 
     static func accept(_ url: URL) -> Bool {
         if url.hasDirectoryPath { return false }
@@ -99,19 +97,18 @@ final class ContentViewModel: ObservableObject {
         let (sMajor, sMinor, sPatch) = extractVersionParts(from: versionText)
         let icon = NSWorkspace.shared.icon(forFile: url.path)
 
-        // A3 警告判定: Illustrator 編集機能のない PDF
-        let isWarning = (fc.kind == "PDF" && !fc.isIllustratorFile)
-
         // 拡張子偽装判定: コンテンツの種類と拡張子が合わない
         // - kind="Ai":  .ai / .ait
         // - kind="EPS": .eps
         // - kind="PSD": .psd
+        // - kind="PSB": .psb
         // - kind="PDF": .pdf
         let expectedExts: [String]
         switch fc.kind {
         case "Ai":  expectedExts = ["ai", "ait"]
         case "EPS": expectedExts = ["eps"]
         case "PSD": expectedExts = ["psd"]
+        case "PSB": expectedExts = ["psb"]
         case "PDF": expectedExts = ["pdf"]
         default:    expectedExts = []
         }
@@ -125,7 +122,6 @@ final class ContentViewModel: ObservableObject {
             icon: icon,
             versionText: versionText,
             kindText: kind,
-            isWarning: isWarning,
             isExtMismatch: isExtMismatch,
             sortMajor: sMajor,
             sortMinor: sMinor,
@@ -138,6 +134,9 @@ final class ContentViewModel: ObservableObject {
         let isPhotoshop = (fc.appName == "Photoshop")
         switch fc.kind {
         case "PDF":
+            if fc.isPhotoshopEditablePDF {
+                return String(localized: "PDF with Photoshop native data (.pdf)")
+            }
             return fc.isIllustratorFile
                 ? String(localized: "PDF with Illustrator native data (.pdf)")
                 : String(localized: "PDF without Illustrator native data (.pdf)")
@@ -155,6 +154,8 @@ final class ContentViewModel: ObservableObject {
             }
         case "PSD":
             return String(localized: "Photoshop format (.psd)")
+        case "PSB":
+            return String(localized: "Large Document format (.psb)")
         default:
             return fc.kind
         }
@@ -165,6 +166,11 @@ final class ContentViewModel: ObservableObject {
     /// 2. カッコ内 (a.b.c.d) → (a.b.c)
     /// 3. 取得できない／対象外は空文字列
     private nonisolated static func formatVersion(fc: AiFileModel) -> String {
+        // Photoshop（PSD/PSB/EPS）: cinf / %%Creator から得た psVersion を表示（例 "2025 (26.11.5)"）
+        if fc.appName == "Photoshop" {
+            guard !fc.psVersion.isEmpty else { return "" }
+            return "\(FileParser.psVersionName(fc.psVersion)) (\(fc.psVersion))"
+        }
         guard fc.isIllustratorFile, !fc.determineCreated.isEmpty else { return "" }
 
         let alias = FileParser.versionName(fc.determineCreated)
@@ -283,7 +289,7 @@ struct ContentView: View {
             id: "kind",
             title: String(localized: "column.kind"),
             { $0.kindText },
-            textColor: { ($0.isWarning || $0.isExtMismatch) ? .systemRed : nil },
+            textColor: { $0.isExtMismatch ? .systemRed : nil },
             minWidth: 100, width: 170,
             secondaryComparator: { lhs, rhs in
                 lhs.displayName.localizedStandardCompare(rhs.displayName)
